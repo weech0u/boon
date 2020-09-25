@@ -1,5 +1,6 @@
 const Koa = require('koa')
 const parser = require('koa-bodyparser')
+const cors = require('koa2-cors')
 
 // 封装好的管理路由的自定义类
 const InitManager = require('./core')
@@ -10,6 +11,7 @@ require('./app/models/user')
 
 const app = new Koa()
 app
+.use(cors())
 .use(parser())
 .use(catchError)
 

@@ -13,15 +13,23 @@ const catchError = async (ctx, next) => {
     if (isDev && !isHttpException) {
       throw error
     }
+    // if (!isHttpException) {
+    //   ctx.body = {
+    //     msg: '发生未知错误',
+    //     code: 499,
+    //     request: `${ctx.method} ${ctx.path}`
+    //   }
+    //   ctx.status = 200
+    // }
 
     // 生产环境, 接收异常
     if (error instanceof HttpException) {
       ctx.body = {
         msg: error.msg,
-        error_code: error.errorCode,
+        code: error.errorCode,
         request: `${ctx.method} ${ctx.path}`
       }
-      ctx.status = error.code
+      ctx.status = 200
     } else {
       ctx.body = {
         msg: 'unknown error',

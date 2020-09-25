@@ -40,7 +40,10 @@ User.init({
     primaryKey: true,
     autoIncrement: true
   },
-  nickname: STRING,
+  nickname: {
+    type: STRING,
+    unique: true
+  },
   email: STRING,
   password: {
     type: STRING,
