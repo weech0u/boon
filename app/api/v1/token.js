@@ -26,10 +26,10 @@ router.post('/', async (ctx) => {
         console.log(error)
       }
       break
-    case LoginType.USER_MOBILE:
-      break
-    case LoginType.ADMIN_EMAIL:
-      break
+    // case LoginType.USER_MOBILE:
+    //   break
+    // case LoginType.ADMIN_EMAIL:
+    //   break
     default:
       throw new HttpException('没有相应的异常处理方法')
   }
