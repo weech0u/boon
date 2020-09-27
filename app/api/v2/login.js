@@ -2,12 +2,14 @@ const Router = require('koa-router')
 const { User } = require('../../models/user')
 const { HttpException } = require('../../../core/http-exception')
 const bcrypt = require('bcryptjs')
+const { Auth } = require('../../../middware/auth')
+const { generateToken } = require('../../../core/util')
 
 const router = new Router({
   prefix: '/api/v2/user'
 })
 
-router.post('/loginVerify',async (ctx, next) => {
+router.post('/loginVerify', async (ctx, next) => {
   const data = ctx.request.body
   const user = await User.findOne({
     where: {
@@ -22,9 +24,14 @@ router.post('/loginVerify',async (ctx, next) => {
   if (!correct) {
     throw new HttpException('密码错误', 402)
   }
+  if (user.level === 0) {
+    throw new HttpException('用户未激活', 403)
+  }
+  const token = generateToken(user.id, Auth.USER)
   ctx.body = {
     code: 200,
-    msg: '登录成功'
+    msg: '登录成功',
+    token: token
   }
 })
 

@@ -21,7 +21,6 @@ class Auth {
       const token = ctx.req.headers.authorization.split(' ')[1]
       // const token = basicAuth(ctx.req)
       let errMsg = 'token不合法'
-      console.log(token)
       if (!token) {
         throw new Forbbiden(errMsg)
       }
@@ -31,9 +30,9 @@ class Auth {
       } catch (error) {
         // 1. token不合法
         // 2. token过期
-        console.log(error)
         if (error.name === 'TokenExpiredError') {
-          errMsg = '已过期'
+          errMsg = 'token已过期'
+          throw new Forbbiden(errMsg)
         }
         
       }

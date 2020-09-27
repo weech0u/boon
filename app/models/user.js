@@ -9,7 +9,8 @@ const {
 
 const {
   Sequelize,
-  Model
+  Model,
+  NUMBER
 } = require('sequelize')
 const {
   STRING,
@@ -53,9 +54,13 @@ User.init({
       this.setDataValue('password', psw)
     }
   },
-  openid: {
-    type: STRING(64),
-    unique: true
+  key: {
+    type: STRING(64)
+  },
+  level: {
+    type: INTEGER,
+    allowNull: true,
+    defaultValue: 0
   }
 }, {
   sequelize,
