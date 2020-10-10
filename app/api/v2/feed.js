@@ -25,7 +25,7 @@ feedparser.on('readable', function () {
   var item;
  
   while (item = stream.read()) {
-    console.log(item);
+    // console.log(item);
   }
 });
  
