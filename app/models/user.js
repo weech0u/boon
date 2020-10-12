@@ -18,6 +18,17 @@ const {
 } = Sequelize
 
 class User extends Model {
+  static async checkOccupied(email) {
+    await User.findOne({
+      where: {
+        email
+      }
+    }).then(res => {
+      if (res) {
+        throw new HttpException('邮箱已被注册', 405)
+      }
+    })
+  }
   static async verifyEmailPassword(account, plainPassword) {
     const user = await User.findOne({
       where: {
@@ -61,6 +72,10 @@ User.init({
     type: INTEGER,
     allowNull: true,
     defaultValue: 0
+  },
+  lastLoginTime: {
+    type: STRING,
+    allowNull: true
   }
 }, {
   sequelize,

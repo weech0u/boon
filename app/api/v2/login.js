@@ -3,7 +3,16 @@ const { User } = require('../../models/user')
 const { HttpException } = require('../../../core/http-exception')
 const bcrypt = require('bcryptjs')
 const { Auth } = require('../../../middware/auth')
-const { generateToken } = require('../../../core/util')
+const { 
+  generateToken,
+  generateDateFormat 
+} = require('../../../core/util')
+const { Sequelize } = require('sequelize')
+const monent = require('moment')
+const Op = Sequelize.Op
+
+// 设置时区
+monent.locale('zh-cn')
 
 const router = new Router({
   prefix: '/api/v2/user'
@@ -13,7 +22,10 @@ router.post('/loginVerify', async (ctx, next) => {
   const data = ctx.request.body
   const user = await User.findOne({
     where: {
-      nickname: data.username
+      [Op.or]: [
+        { nickname: data.username },
+        { email: data.username }
+      ]
     }
   })
   if (!user) {
@@ -28,10 +40,20 @@ router.post('/loginVerify', async (ctx, next) => {
     throw new HttpException('用户未激活', 403)
   }
   const token = generateToken(user.id, Auth.USER)
+  const loginTime = generateDateFormat().date
+  user.updatedAt = loginTime
+  user.save()
+
   ctx.body = {
     code: 200,
     msg: '登录成功',
-    token: token
+    token: token,
+    userInfo: {
+      nickname: user.nickname,
+      email: user.email,
+      loginTime,
+      level: user.level
+    }
   }
 })
 

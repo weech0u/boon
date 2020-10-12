@@ -20,17 +20,23 @@ const {
   HttpException
 } = require("../../../core/http-exception")
 
-router.post('/register', checkEmail, async (ctx, next) => {
+const { generateDateFormat } = require('../../../core/util')
+
+router.post('/register', async (ctx, next) => {
+  console.log('a')
   const data = ctx.request.body
   const {
     email
   } = data
 
+  await User.checkOccupied(email)
+
   const user = {
     email,
     password: data.password,
     nickname: uuidv4().slice(0, 2),
-    key: uuidv4().slice(0, 6)
+    key: uuidv4().slice(0, 6),
+    lastLoginTime: generateDateFormat().date
   }
 
   const res = await User.create(user)
@@ -45,22 +51,5 @@ router.post('/register', checkEmail, async (ctx, next) => {
     email
   }
 })
-
-async function checkEmail(ctx, next) {
-  const data = ctx.request.body
-  const {
-    email
-  } = data
-  await User.findOne({
-    raw: true,
-    where: {
-      email
-    }
-  }).then(res => {
-    if (res) {
-      throw new HttpException('邮箱已被注册', 405)
-    }
-  })
-}
 
 module.exports = router
