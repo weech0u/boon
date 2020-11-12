@@ -22,7 +22,12 @@ Article.init({
 }, {
   sequelize,
   modelName: 'Article',
-  freezeTableName: true
+  freezeTableName: true,
+  created: {
+    type: DataTypes.DATE,
+    allowNull: true
+  },
+  timestamps: true
 })
 
 Article.sync()

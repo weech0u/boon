@@ -13,7 +13,7 @@ router.get('/article/:id', async (ctx) => {
     }
   })
   const {uId} = article
-  const {avatar} = await User.findOne({
+  const {avatar, nickname, level} = await User.findOne({
     where: {
       id: uId
     }
@@ -21,11 +21,14 @@ router.get('/article/:id', async (ctx) => {
   ctx.body = {
     code: 200,
     title: article.title,
-    author: article.author,
+    author: {
+      nickname,
+      level,
+      avatar
+    },
     content: article.content,
-    createAt: article.createAt,
+    createdAt: article.createdAt,
     updatedAt: article.updatedAt,
-    avatar
   }
 })
 
