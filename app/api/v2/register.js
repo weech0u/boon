@@ -33,6 +33,7 @@ router.post('/register', async (ctx, next) => {
 
   const user = {
     email,
+    uId: uuidv4().slice(0, 8),
     password: data.password,
     nickname: uuidv4().slice(0, 2),
     key: uuidv4().slice(0, 6),

@@ -20,6 +20,7 @@
     "koa-router": "^9.4.0",
     "koa2-cors": "^2.0.6",
     "lin-mizar": "^0.3.8",
+    "mime-types": "^2.1.27",
     "moment": "^2.29.1",
     "mysql2": "^2.2.3",
     "node-fetch": "^2.6.1",

@@ -2,20 +2,16 @@ const bcrypt = require('bcryptjs')
 const {
   HttpException
 } = require('../../core/http-exception')
-
 const {
   sequelize
 } = require('../../core/db')
-
 const {
-  Sequelize,
-  Model,
-  NUMBER
+  Article
+} = require('../models/article')
+const {
+  DataTypes,
+  Model
 } = require('sequelize')
-const {
-  STRING,
-  INTEGER
-} = Sequelize
 
 class User extends Model {
   static async checkOccupied(email) {
@@ -48,17 +44,22 @@ class User extends Model {
 
 User.init({
   id: {
-    type: INTEGER,
+    type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true
   },
+  uId: {
+    type: DataTypes.STRING(60),
+    allowNull: false,
+    field: 'u_id'
+  },
   nickname: {
-    type: STRING,
+    type: DataTypes.STRING,
     unique: true
   },
-  email: STRING,
+  email: DataTypes.STRING,
   password: {
-    type: STRING,
+    type: DataTypes.STRING,
     set(val) {
       const salt = bcrypt.genSaltSync(10)
       const psw = bcrypt.hashSync(val, salt)
@@ -66,23 +67,40 @@ User.init({
     }
   },
   key: {
-    type: STRING(64)
+    type: DataTypes.STRING(64)
   },
   level: {
-    type: INTEGER,
+    type: DataTypes.INTEGER,
     allowNull: true,
     defaultValue: 0
   },
   lastLoginTime: {
-    type: STRING,
+    type: DataTypes.STRING,
     allowNull: true
+  },
+  avatar: {
+    type: DataTypes.STRING,
+    defaultValue: 'http://localhost:3001/api/v2/img/1'
   }
 }, {
   sequelize,
-  tableName: 'user'
+  modelName: 'User',
+  freezeTableName: true
 })
 
-// 数据迁移 SQL 更新 风险
+User.hasMany(Article, {
+  foreignKey: 'uId',
+  as: 'Articles',
+  sourceKey: 'id'
+})
+
+Article.belongsTo(User, {
+  as: 'User',
+  foreignKey: 'uId',
+  targetKey: 'id'
+})
+
+User.sync()
 
 module.exports = {
   User
