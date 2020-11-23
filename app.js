@@ -13,7 +13,7 @@ require('./app/models/article')
 const app = new Koa()
 app
 .use(cors())
-.use(parser())
+.use(parser())  
 .use(catchError)
 
 InitManager.initCore(app)

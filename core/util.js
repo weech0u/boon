@@ -1,6 +1,11 @@
 const jwt = require('jsonwebtoken')
 const moment = require('moment')
 
+const generateIdByDate = function() {
+  const _today = moment()
+  return _today.format('YYYYMMDDhhmmss')
+}
+
 const generateDateFormat = function(format) {
   const today = {}
   const _today = moment()
@@ -24,6 +29,7 @@ const generateToken = function(uid, scope) {
 }
 
 module.exports = {
+  generateIdByDate,
   generateToken,
-  generateDateFormat
+  generateDateFormat,
 }

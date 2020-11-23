@@ -14,10 +14,13 @@ Article.init({
     primaryKey: true,
     autoIncrement: true
   },
-  arId: DataTypes.INTEGER,
+  arId: DataTypes.STRING,
   title: DataTypes.STRING(30),
   author: DataTypes.STRING(12),
-  niceCount: DataTypes.INTEGER,
+  niceCount: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0
+  },
   content: DataTypes.TEXT,
 }, {
   sequelize,

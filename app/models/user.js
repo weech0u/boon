@@ -55,7 +55,7 @@ User.init({
   },
   nickname: {
     type: DataTypes.STRING,
-    unique: true
+    // unique: true
   },
   email: DataTypes.STRING,
   password: {
