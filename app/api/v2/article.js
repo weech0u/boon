@@ -56,6 +56,7 @@ router.post('/article/new', async (ctx) => {
     content,
     uId
   } = ctx.request.body
+  console.log(ctx.request.body)
 
   try {
     await Article.create({
