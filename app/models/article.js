@@ -21,6 +21,7 @@ Article.init({
     type: DataTypes.INTEGER,
     defaultValue: 0
   },
+  tags: DataTypes.STRING,
   content: DataTypes.TEXT,
 }, {
   sequelize,
@@ -32,8 +33,6 @@ Article.init({
   },
   timestamps: true
 })
-
-Article.sync()
 
 module.exports = {
   Article

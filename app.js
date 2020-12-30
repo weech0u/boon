@@ -9,6 +9,7 @@ const catchError = require('./middware/exception')
 // 根据模型创建数据库
 require('./app/models/user')
 require('./app/models/article')
+require('./app/models/love')
 
 const app = new Koa()
 app

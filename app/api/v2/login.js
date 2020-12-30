@@ -49,6 +49,7 @@ router.post('/loginVerify', async (ctx, next) => {
     msg: '登录成功',
     token: token,
     userInfo: {
+      uId: user.uId,
       nickname: user.nickname,
       email: user.email,
       loginTime,

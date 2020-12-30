@@ -12,14 +12,32 @@ const {
 const router = new Router({
   prefix: '/api/v2'
 })
+const moment = require('moment')
+
+// 获取所有文章, 分页10
+router.get('/article', async (ctx) => {
+  const articles = await Article.findAll({
+    limit: 10
+  })
+  articles.map(item => {
+    const tempTime = moment(item.dataValues.updatedAt)
+    item.dataValues.updatedAt = moment().isSame(tempTime,'d')?moment(tempTime).format('h:mm'):moment(tempTime).format('M-D')
+    return item
+  })
+  ctx.body = {
+    code: 200,
+    data: articles
+  }
+})
 
 // 根据id获取指定文章
 router.get('/article/:id', async (ctx) => {
   const article = await Article.findOne({
     where: {
-      arid: ctx.params.id
+      uId: ctx.params.id
     }
   })
+  console.log(ctx.params.id)
   const {
     uId
   } = article
@@ -49,7 +67,7 @@ router.get('/article/:id', async (ctx) => {
 // 创建
 router.post('/article/new', async (ctx) => {
   let code = 200,
-   msg = 'success';
+    msg = 'success';
   const {
     title,
     author,
