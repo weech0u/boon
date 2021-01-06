@@ -6,22 +6,37 @@ const {
   User
 } = require('../../models/user')
 const {
+  Comment
+} = require('../../models/comment')
+const {
   generateIdByDate
 } = require('../../../core/util')
 
 const router = new Router({
-  prefix: '/api/v2'
+  prefix: '/api/v2/article'
 })
 const moment = require('moment')
 
 // 获取所有文章, 分页10
-router.get('/article', async (ctx) => {
+router.get('/', async (ctx) => {
   const articles = await Article.findAll({
-    limit: 10
+    limit: 10,
+    include: ['Comments']
   })
-  articles.map(item => {
+  articles.forEach(async (item) => {
+    // 时间戳处理
     const tempTime = moment(item.dataValues.updatedAt)
-    item.dataValues.updatedAt = moment().isSame(tempTime,'d')?moment(tempTime).format('h:mm'):moment(tempTime).format('M-D')
+    item.dataValues.updatedAt = moment().isSame(tempTime, 'd') ? moment(tempTime).format('h:mm') : moment(tempTime).format('Y-M-D')
+    // 获取评论数
+    try {
+      item.dataValues.commentsCount = item.Comments.length
+      return item
+    } catch (error) {
+      ctx.body = {
+        code: 400,
+        msg: `${error}`
+      }
+    }
     return item
   })
   ctx.body = {
@@ -31,25 +46,27 @@ router.get('/article', async (ctx) => {
 })
 
 // 根据id获取指定文章
-router.get('/article/:id', async (ctx) => {
+router.get('/:id', async (ctx) => {
   const article = await Article.findOne({
     where: {
-      uId: ctx.params.id
+      id: ctx.params.id
     }
   })
-  console.log(ctx.params.id)
   const {
     uId
   } = article
-  const {
-    avatar,
-    nickname,
-    level
-  } = await User.findOne({
+
+  const user = await User.findOne({
     where: {
       id: uId
     }
   })
+
+  const {
+    avatar,
+    nickname,
+    level
+  } = user
   ctx.body = {
     code: 200,
     title: article.title,
@@ -65,16 +82,16 @@ router.get('/article/:id', async (ctx) => {
 })
 
 // 创建
-router.post('/article/new', async (ctx) => {
+router.post('/new', async (ctx) => {
   let code = 200,
     msg = 'success';
   const {
     title,
     author,
     content,
-    uId
+    id,
+    selectTheme
   } = ctx.request.body
-  console.log(ctx.request.body)
 
   try {
     await Article.create({
@@ -82,11 +99,12 @@ router.post('/article/new', async (ctx) => {
       title,
       author,
       content,
-      uId
+      uId: id,
+      tags: selectTheme
     })
   } catch (error) {
     code = 400
-    msg = '发生异常'
+    msg = 'error'
     console.log(error)
   }
 

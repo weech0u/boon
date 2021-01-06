@@ -3,7 +3,8 @@ const {
   User
 } = require('../../models/user')
 const {
-  generateToken
+  generateToken,
+  generateDateFormat
 } = require('../../../core/util')
 const {
   Auth
@@ -27,11 +28,22 @@ router.post('/activate', async (ctx) => {
       })
 
       const token = generateToken(res.getDataValue('id'), Auth.USER)
+      const loginTime = generateDateFormat().date
+      res.updatedAt = loginTime
+      res.save()
 
       ctx.body = {
         code: 200,
         msg: '激活成功',
-        token
+        token,
+        userInfo: {
+          id: res.id,
+          uId: res.uId,
+          nickname: res.nickname,
+          email: res.email,
+          loginTime,
+          level: res.level
+        }
       }
     })
 })

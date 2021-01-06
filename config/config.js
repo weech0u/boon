@@ -3,9 +3,11 @@ module.exports = {
   environment: 'dev',
   database: {
     name: 'island',
+    // host: '122.152.204.232',
     host: 'localhost',
     port: 3306,
     user: 'root',
+    // password: '89974037Zxc!'
     password: '89974037zxc'
   },
   security: {

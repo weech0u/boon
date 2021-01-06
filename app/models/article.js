@@ -5,6 +5,9 @@ const {
   DataTypes,
   Model
 } = require('sequelize')
+const {
+  Comment
+} = require('./comment')
 
 class Article extends Model {}
 
@@ -32,6 +35,18 @@ Article.init({
     allowNull: true
   },
   timestamps: true
+})
+
+Article.hasMany(Comment,{
+  foreignKey: 'arId',
+  as: 'Comments',
+  sourceKey: 'id'
+})
+
+Comment.belongsTo(Article, {
+  as: 'Article',
+  foreignKey: 'arId',
+  targetKey: 'id'
 })
 
 module.exports = {

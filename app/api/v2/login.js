@@ -47,8 +47,9 @@ router.post('/loginVerify', async (ctx, next) => {
   ctx.body = {
     code: 200,
     msg: '登录成功',
-    token: token,
+    token,
     userInfo: {
+      id: user.id,
       uId: user.uId,
       nickname: user.nickname,
       email: user.email,

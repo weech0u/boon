@@ -14,7 +14,9 @@ require('./app/models/love')
 const app = new Koa()
 app
 .use(cors())
-.use(parser())  
+.use(parser({
+  multipart: true
+}))  
 .use(catchError)
 
 InitManager.initCore(app)
