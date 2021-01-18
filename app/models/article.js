@@ -26,6 +26,7 @@ Article.init({
   },
   tags: DataTypes.STRING,
   content: DataTypes.TEXT,
+  howLongAgo: DataTypes.STRING
 }, {
   sequelize,
   modelName: 'Article',

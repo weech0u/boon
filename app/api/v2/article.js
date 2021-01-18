@@ -9,7 +9,8 @@ const {
   Comment
 } = require('../../models/comment')
 const {
-  generateIdByDate
+  generateIdByDate,
+  howLongAgo
 } = require('../../../core/util')
 
 const router = new Router({
@@ -18,35 +19,59 @@ const router = new Router({
 const moment = require('moment')
 
 // 获取所有文章, 分页10
-router.get('/', async (ctx) => {
+async function getAllArticle(con, ctx) {
+  let order = ['id', 'DESC']
+  if (con === 1) {
+    order = ['updatedAt', 'DESC']
+  }
   const articles = await Article.findAll({
     limit: 10,
-    include: ['Comments']
+    include: ['Comments'],
+    order: [
+      order
+    ],
+    // attributes: ['id', 'updatedAt']
   })
+  const data = []
   articles.forEach(async (item) => {
     // 时间戳处理
-    const tempTime = moment(item.dataValues.updatedAt)
-    item.dataValues.updatedAt = moment().isSame(tempTime, 'd') ? moment(tempTime).format('h:mm') : moment(tempTime).format('Y-M-D')
+    item = item.toJSON()
+    // const tempTime = moment(item.dataValues.updatedAt)
+    const format = item.updatedAt ? moment(item.updatedAt).format('YYYY-MM-DD hh:mm:ss') : moment(item.createdAt).format('YYYY-MM-DD hh:mm:ss')
+    // item.updatedAt = moment().isSame(tempTime, 'd') ? moment(tempTime).format('h:mm') : moment(tempTime).format('Y-M-D')
     // 获取评论数
     try {
-      item.dataValues.commentsCount = item.Comments.length
-      return item
+      item.commentsCount = item.Comments.length
+      item.howLongAgo = howLongAgo(format)
+      data.push(item)
     } catch (error) {
       ctx.body = {
         code: 400,
         msg: `${error}`
       }
     }
-    return item
   })
+  return data
+}
+
+router.get('/', async ctx => {
+  const data = await getAllArticle(0, ctx)
   ctx.body = {
     code: 200,
-    data: articles
+    data
+  }
+})
+
+router.get('/latest', async ctx => {
+  const data = await getAllArticle(1, ctx)
+  ctx.body = {
+    code: 200,
+    data
   }
 })
 
 // 根据id获取指定文章
-router.get('/:id', async (ctx) => {
+router.get('/:id', async ctx => {
   const article = await Article.findOne({
     where: {
       id: ctx.params.id

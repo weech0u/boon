@@ -20,22 +20,23 @@ router.post('/like', async (ctx) => {
     state
   } = ctx.request.body
 
-  console.log(state)
   const {
     dataValues
   } = await Article.findOne({
     where: {
       arId: arId
     }
+  }, res => {
+    res.update({
+      niceCount: dataValues.niceCount + n
+    }, {
+      where: {
+        arId: arId
+      }
+    })
   })
   n = state === 0 ? -1 : 1
-  Article.update({
-    niceCount: dataValues.niceCount + n
-  }, {
-    where: {
-      arId: arId
-    }
-  })
+  
   ctx.body = {
     code: 200
   }

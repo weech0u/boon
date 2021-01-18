@@ -3,6 +3,7 @@ const Router = require('koa-router')
 const moment = require('moment')
 const { HttpException } = require('../../../core/http-exception')
 const { howLongAgo } = require('../../../core/util')
+const { Article } = require('../../models/article')
 const {
   Comment
 } = require('../../models/comment')
@@ -22,14 +23,12 @@ router.get('/:arId', async (ctx) => {
       arId: ctx.params.arId
     }
   })
+  console.log(ctx.params.arId)
   comments.forEach(comment => {
     comment = comment.toJSON()
-    console.log(comment.createdAt)
     const createdAt = moment(comment.createdAt)
-    console.log(createdAt)
     formatDate = createdAt.format('YYYY-MM-DD HH:mm:ss')
-    console.log(formatDate)
-    comment.howLongAgo = howLongAgo(formatDate) + '前'
+    comment.howLongAgo = howLongAgo(formatDate)
     data.push(comment)
   })
   ctx.body = {
@@ -69,8 +68,14 @@ router.post('/new', async (ctx) => {
     throw new HttpException('找不到指定用户')
   }
   try {
-    Comment.create({
+    const comment = await Comment.create({
       ...data
+    })
+    Article.update({
+    },{
+      where: {
+        id: 1
+      }
     })
   } catch(error) {
     ctx.body = {

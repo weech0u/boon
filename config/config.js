@@ -12,6 +12,6 @@ module.exports = {
   },
   security: {
     secretKey: 'a635fc6d-3666-44e9-ae48-74827f62528b',
-    expiresIn: 60*60 // 过期时间, 1h
+    expiresIn: 60*60*24 // 过期时间, 1h
   }
 }
