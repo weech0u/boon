@@ -49,7 +49,6 @@ router.post('/new', async (ctx) => {
   if (to_nickname) {
     condition.nickname = to_nickname
   }
-  console.log(data)
   try {
     const to_user = await User.findOne({
       where: {...condition}

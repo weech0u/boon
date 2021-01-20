@@ -26,7 +26,7 @@ async function getAllArticle(con, ctx) {
   }
   const articles = await Article.findAll({
     limit: 10,
-    include: ['Comments'],
+    include: ['Comments', 'User'],
     order: [
       order
     ],
@@ -42,6 +42,7 @@ async function getAllArticle(con, ctx) {
     // 获取评论数
     try {
       item.commentsCount = item.Comments.length
+      item.avatar = item.User.avatar
       item.howLongAgo = howLongAgo(format)
       data.push(item)
     } catch (error) {
