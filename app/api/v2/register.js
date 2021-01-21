@@ -23,7 +23,6 @@ const {
 const { generateDateFormat } = require('../../../core/util')
 
 router.post('/register', async (ctx, next) => {
-  console.log('a')
   const data = ctx.request.body
   const {
     email

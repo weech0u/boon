@@ -20,12 +20,16 @@ const moment = require('moment')
 
 // 获取所有文章, 分页10
 async function getAllArticle(con, ctx) {
+  // 页码
+  const query = ctx.request.query
+  const pageNum = query.pageNum ? query.pageNum : 1
   let order = ['id', 'DESC']
   if (con === 1) {
     order = ['updatedAt', 'DESC']
   }
   const articles = await Article.findAll({
     limit: 10,
+    offset: pageNum * 10,
     include: ['Comments', 'User'],
     order: [
       order
@@ -37,7 +41,7 @@ async function getAllArticle(con, ctx) {
     // 时间戳处理
     item = item.toJSON()
     // const tempTime = moment(item.dataValues.updatedAt)
-    const format = item.updatedAt ? moment(item.updatedAt).format('YYYY-MM-DD hh:mm:ss') : moment(item.createdAt).format('YYYY-MM-DD hh:mm:ss')
+    const format = item.updatedAt ? moment(item.updatedAt).format('YYYY-MM-DD HH:mm:ss') : moment(item.createdAt).format('YYYY-MM-DD hh:mm:ss')
     // item.updatedAt = moment().isSame(tempTime, 'd') ? moment(tempTime).format('h:mm') : moment(tempTime).format('Y-M-D')
     // 获取评论数
     try {
@@ -52,6 +56,9 @@ async function getAllArticle(con, ctx) {
       }
     }
   })
+  if (con === 2) {
+    data.sort((a, b) => b.Comments.length - a.Comments.length)
+  }
   return data
 }
 
@@ -65,6 +72,14 @@ router.get('/', async ctx => {
 
 router.get('/latest', async ctx => {
   const data = await getAllArticle(1, ctx)
+  ctx.body = {
+    code: 200,
+    data
+  }
+})
+
+router.get('/hotest', async ctx => {
+  const data = await getAllArticle(2, ctx)
   ctx.body = {
     code: 200,
     data
