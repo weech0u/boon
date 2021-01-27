@@ -8,6 +8,9 @@ const {
 const {
   Comment
 } = require('./comment')
+const {
+  Love
+} = require('./love')
 
 class Article extends Model {}
 
@@ -38,7 +41,8 @@ Article.init({
   timestamps: true
 })
 
-Article.hasMany(Comment,{
+// 外键: 文章->评论 (一对多)
+Article.hasMany(Comment, {
   foreignKey: 'arId',
   as: 'Comments',
   sourceKey: 'id'
@@ -48,6 +52,19 @@ Comment.belongsTo(Article, {
   as: 'Article',
   foreignKey: 'arId',
   targetKey: 'id'
+})
+
+// 外键: 文章->点赞表 (一对多)
+Article.hasMany(Love, {
+  foreignKey: 'arId',
+  as: 'Love',
+  sourceKey: 'id'
+})
+
+Love.belongsTo(Article, {
+  as: 'Article',
+  foreignKey: 'arId',
+  sourceKey: 'id'
 })
 
 module.exports = {

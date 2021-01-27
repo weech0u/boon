@@ -17,8 +17,6 @@ Comment.init({
     autoIncrement: true,
     primaryKey: true
   },
-  from_avatar: DataTypes.STRING,
-  from_nickname: DataTypes.STRING,
   from_uid: DataTypes.INTEGER,
   to_avatar: DataTypes.STRING,
   to_nickname: DataTypes.STRING,

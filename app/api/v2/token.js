@@ -6,6 +6,7 @@ const router = new Router({
 })
 
 router.post('/tokenVerify',new Auth().m, (ctx) => {
+  console.log(ctx.auth)
   ctx.body = {
     code: 200
   }

@@ -30,7 +30,7 @@ async function getAllArticle(con, ctx) {
   const articles = await Article.findAll({
     limit: 10,
     offset: pageNum * 10,
-    include: ['Comments', 'User'],
+    include: ['Comments', 'User', 'Love'],
     order: [
       order
     ],
@@ -40,15 +40,16 @@ async function getAllArticle(con, ctx) {
   articles.forEach(async (item) => {
     // 时间戳处理
     item = item.toJSON()
-    // const tempTime = moment(item.dataValues.updatedAt)
     const format = item.updatedAt ? moment(item.updatedAt).format('YYYY-MM-DD HH:mm:ss') : moment(item.createdAt).format('YYYY-MM-DD hh:mm:ss')
-    // item.updatedAt = moment().isSame(tempTime, 'd') ? moment(tempTime).format('h:mm') : moment(tempTime).format('Y-M-D')
     // 获取评论数
     try {
       item.commentsCount = item.Comments.length
       item.avatar = item.User.avatar
       item.howLongAgo = howLongAgo(format)
+      item.Love = item.Love.map(item => item.state == 1 && item.uId)
+
       data.push(item)
+
     } catch (error) {
       ctx.body = {
         code: 400,

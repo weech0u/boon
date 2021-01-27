@@ -14,11 +14,11 @@ Love.init({
     autoIncrement: true,
     primaryKey: true
   },
-  cid: DataTypes.STRING,
-  uid: DataTypes.INTEGER,
-  status: {
+  arId: DataTypes.INTEGER,
+  uId: DataTypes.INTEGER,
+  state: {
     type: DataTypes.INTEGER(0,1),
-    defaultValue: 0
+    defaultValue: 1
   }
 },{
   sequelize,

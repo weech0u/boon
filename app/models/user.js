@@ -9,6 +9,9 @@ const {
   Article
 } = require('../models/article')
 const {
+  Love
+} = require('../models/love')
+const {
   DataTypes,
   Model
 } = require('sequelize')
@@ -88,6 +91,7 @@ User.init({
   freezeTableName: true
 })
 
+// User->Article 一对多
 User.hasMany(Article, {
   foreignKey: 'uId',
   as: 'Articles',
@@ -100,7 +104,7 @@ Article.belongsTo(User, {
   targetKey: 'id'
 })
 
-User.sync()
+// User.sync()
 
 module.exports = {
   User

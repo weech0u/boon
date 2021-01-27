@@ -21,7 +21,6 @@ const catchError = async (ctx, next) => {
 
     // 生产环境, 接收异常
     if (error instanceof HttpException) {
-      console.log(error)
       ctx.body = {
         msg: error.msg,
         code: error.code,

@@ -1,9 +1,17 @@
-const { from } = require('feedparser')
+const {
+  from
+} = require('feedparser')
 const Router = require('koa-router')
 const moment = require('moment')
-const { HttpException } = require('../../../core/http-exception')
-const { howLongAgo } = require('../../../core/util')
-const { Article } = require('../../models/article')
+const {
+  HttpException
+} = require('../../../core/http-exception')
+const {
+  howLongAgo
+} = require('../../../core/util')
+const {
+  Article
+} = require('../../models/article')
 const {
   Comment
 } = require('../../models/comment')
@@ -23,14 +31,24 @@ router.get('/:arId', async (ctx) => {
       arId: ctx.params.arId
     }
   })
-  console.log(ctx.params.arId)
-  comments.forEach(comment => {
+  for (let comment of comments) {
     comment = comment.toJSON()
     const createdAt = moment(comment.createdAt)
     formatDate = createdAt.format('YYYY-MM-DD HH:mm:ss')
     comment.howLongAgo = howLongAgo(formatDate)
-    data.push(comment)
-  })
+    try {
+      const from_user = await User.findOne({
+        where: {
+          id: comment.from_uid
+        }
+      })
+      comment.from_avatar = from_user.avatar
+      comment.from_nickname = from_user.nickname
+      data.push(comment)
+    } catch (error) {
+      throw new HttpException(error)
+    }
+  }
   ctx.body = {
     code: 200,
     data
@@ -51,7 +69,9 @@ router.post('/new', async (ctx) => {
   }
   try {
     const to_user = await User.findOne({
-      where: {...condition}
+      where: {
+        ...condition
+      }
     })
     console.log(to_user.toJSON())
     const from_user = await User.findOne({
@@ -59,10 +79,10 @@ router.post('/new', async (ctx) => {
         id: from_uid
       }
     })
-    
+
     data.from_avatar = from_user.toJSON().avatar
     data.from_nickname = from_user.toJSON().nickname
-  } catch(error) {
+  } catch (error) {
     console.log(error)
     throw new HttpException('找不到指定用户')
   }
@@ -70,19 +90,18 @@ router.post('/new', async (ctx) => {
     const comment = await Comment.create({
       ...data
     })
-    Article.update({
-    },{
+    Article.update({}, {
       where: {
         id: 1
       }
     })
-  } catch(error) {
+  } catch (error) {
     ctx.body = {
       code: 400,
       msg: `${error}`
     }
   }
-  
+
   ctx.body = {
     code: 200,
     msg: 'success'

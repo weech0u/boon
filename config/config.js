@@ -15,6 +15,6 @@ module.exports = {
     expiresIn: 60*60*24 // 过期时间, 1h
   },
   BASE_PATH: process.cwd(),
-  TEST_URL: 'http://localhost:3001/',
+  TEST_URL: 'http://192.168.31.50:3001/',
   PRO_URL: ''
 }
