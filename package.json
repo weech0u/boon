@@ -12,6 +12,7 @@
   "dependencies": {
     "basic-auth": "^2.0.1",
     "bcryptjs": "^2.4.3",
+    "config": "^3.3.3",
     "feedparser": "^2.2.10",
     "joi": "^17.2.1",
     "jsonwebtoken": "^8.5.1",
@@ -23,6 +24,7 @@
     "koa-static": "^5.0.0",
     "koa2-cors": "^2.0.6",
     "lin-mizar": "^0.3.8",
+    "log4js": "^6.3.0",
     "mime-types": "^2.1.27",
     "moment": "^2.29.1",
     "mysql2": "^2.2.3",

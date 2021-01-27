@@ -1,6 +1,8 @@
 const {
   HttpException
 } = require("../core/http-exception")
+const log4js = require('../core/logger')
+const logger = log4js.getLogger('default')
 
 // 全局异常监听, 
 const catchError = async (ctx, next) => {
@@ -13,20 +15,16 @@ const catchError = async (ctx, next) => {
     if (isDev && !isHttpException) {
       throw error
     }
-    // if (!isHttpException) {
-    //   ctx.body = {
-    //     msg: '发生未知错误',
-    //     code: 499,
-    //     request: `${ctx.method} ${ctx.path}`
-    //   }
-    //   ctx.status = 200
-    // }
+
+    // 写入日志
+    logger.error(`<${error.code}> ${error.msg}`)
 
     // 生产环境, 接收异常
     if (error instanceof HttpException) {
+      console.log(error)
       ctx.body = {
         msg: error.msg,
-        code: error.errorCode,
+        code: error.code,
         request: `${ctx.method} ${ctx.path}`
       }
       ctx.status = 200
