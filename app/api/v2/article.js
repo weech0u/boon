@@ -26,18 +26,20 @@ async function getAllArticle(con, ctx) {
   let order = ['id', 'DESC']
   if (con === 1) {
     order = ['updatedAt', 'DESC']
+  } else if(con === 2) {
+    order = ['commentsCount', 'DESC']
   }
-  const articles = await Article.findAll({
-    limit: 10,
-    offset: pageNum * 10,
+  let limit = 5, offset = (pageNum - 1) * limit
+  const articles = await Article.findAndCountAll({
+    limit,
+    offset,
     include: ['Comments', 'User', 'Love'],
     order: [
       order
     ],
-    // attributes: ['id', 'updatedAt']
   })
   const data = []
-  articles.forEach(async (item) => {
+  articles.rows.forEach(async (item) => {
     // 时间戳处理
     item = item.toJSON()
     const format = item.updatedAt ? moment(item.updatedAt).format('YYYY-MM-DD HH:mm:ss') : moment(item.createdAt).format('YYYY-MM-DD hh:mm:ss')
@@ -57,34 +59,28 @@ async function getAllArticle(con, ctx) {
       }
     }
   })
-  if (con === 2) {
-    data.sort((a, b) => b.Comments.length - a.Comments.length)
+  return {
+    code: 200,
+    limit,
+    offset,
+    total: articles.count,
+    data
   }
-  return data
 }
 
 router.get('/', async ctx => {
   const data = await getAllArticle(0, ctx)
-  ctx.body = {
-    code: 200,
-    data
-  }
+  ctx.body = data
 })
 
 router.get('/latest', async ctx => {
   const data = await getAllArticle(1, ctx)
-  ctx.body = {
-    code: 200,
-    data
-  }
+  ctx.body = data
 })
 
 router.get('/hotest', async ctx => {
   const data = await getAllArticle(2, ctx)
-  ctx.body = {
-    code: 200,
-    data
-  }
+  ctx.body = data
 })
 
 // 根据id获取指定文章
