@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2020-11-05 15:45:44
+ * @LastEditTime: 2021-01-29 16:57:33
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: /boon/app/models/article.js
+ */
 const {
   sequelize
 } = require('../../core/db')
@@ -24,6 +32,10 @@ Article.init({
   title: DataTypes.STRING(30),
   author: DataTypes.STRING(12),
   niceCount: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0
+  },
+  commentsCount: {
     type: DataTypes.INTEGER,
     defaultValue: 0
   },

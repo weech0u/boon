@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2020-09-21 13:53:56
+ * @LastEditTime: 2021-01-29 14:49:17
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: /boon/config/config.js
+ */
 module.exports = {
   // 开发环境
   environment: 'dev',
@@ -15,6 +23,6 @@ module.exports = {
     expiresIn: 60*60*24 // 过期时间, 1h
   },
   BASE_PATH: process.cwd(),
-  TEST_URL: 'http://192.168.31.50:3001/',
+  TEST_URL: 'http://localhost:3001/',
   PRO_URL: ''
 }
