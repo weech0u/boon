@@ -9,8 +9,8 @@ const {
   Article
 } = require('../models/article')
 const {
-  Love
-} = require('../models/love')
+  Notification
+} = require('../models/noti')
 const {
   DataTypes,
   Model
@@ -104,6 +104,18 @@ Article.belongsTo(User, {
   targetKey: 'id'
 })
 
+// User -> Notification 一对多
+User.hasMany(Notification, {
+  foreignKey: 'uId',
+  as: 'Notifications',
+  sourceKey: 'id'
+})
+
+Notification.belongsTo(User, {
+  as: 'User',
+  foreignKey: 'uId',
+  targetKey: 'id'
+})
 // User.sync()
 
 module.exports = {

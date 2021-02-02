@@ -1,10 +1,8 @@
-const Router = require('koa-router')
 const {
   sequelize
 } = require('../../core/db')
 const {
   Model,
-  Sequelize,
   DataTypes
 } = require('sequelize')
 

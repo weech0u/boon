@@ -6,9 +6,6 @@ const {
   User
 } = require('../../models/user')
 const {
-  Comment
-} = require('../../models/comment')
-const {
   generateIdByDate,
   howLongAgo
 } = require('../../../core/util')
@@ -17,7 +14,6 @@ const router = new Router({
   prefix: '/api/v2/article'
 })
 const moment = require('moment')
-
 // 获取所有文章, 分页10
 async function getAllArticle(con, ctx) {
   // 页码
@@ -68,12 +64,12 @@ async function getAllArticle(con, ctx) {
   }
 }
 
-router.get('/', async ctx => {
+router.get('/', async (ctx) => {
   const data = await getAllArticle(0, ctx)
   ctx.body = data
 })
 
-router.get('/latest', async ctx => {
+router.get('/latest', async (ctx, b) => {
   const data = await getAllArticle(1, ctx)
   ctx.body = data
 })

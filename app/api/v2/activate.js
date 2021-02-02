@@ -1,3 +1,11 @@
+/*
+ * @Description: 
+ * @Version: 1.0
+ * @Autor: zhou wei
+ * @Date: 2020-09-27 14:15:47
+ * @LastEditors: zhou wei
+ * @LastEditTime: 2021-02-01 15:38:07
+ */
 const Router = require('koa-router')
 const {
   User
@@ -8,7 +16,7 @@ const {
 } = require('../../../core/util')
 const {
   Auth
-} = require('../../../middware/auth')
+} = require('../../../middleware/auth')
 
 const router = new Router({
   prefix: '/api/v2'

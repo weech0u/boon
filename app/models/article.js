@@ -1,7 +1,7 @@
 /*
- * @Author: your name
+ * @Author: zhou wei
  * @Date: 2020-11-05 15:45:44
- * @LastEditTime: 2021-01-29 16:57:33
+ * @LastEditTime: 2021-02-01 11:34:50
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /boon/app/models/article.js

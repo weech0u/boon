@@ -1,10 +1,18 @@
+/*
+ * @Description: 
+ * @Version: 1.0
+ * @Autor: zhou wei
+ * @Date: 2020-09-22 11:28:26
+ * @LastEditors: zhou wei
+ * @LastEditTime: 2021-02-01 15:37:51
+ */
 const Router = require('koa-router')
 const { TokenValidator } = require('../../validators')
 const { LoginType } = require('../../lib/ecode')
 const { User } = require('../../models/user')
 const { HttpException } = require('../../../core/http-exception')
 const { generateToken } = require('../../../core/util')
-const { Auth } = require('../../../middware/auth')
+const { Auth } = require('../../../middleware/auth')
 
 const router = new Router({
   prefix: '/v1/token'

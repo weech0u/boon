@@ -1,3 +1,11 @@
+/*
+ * @Description: 
+ * @Version: 1.0
+ * @Autor: zhou wei
+ * @Date: 2020-09-25 11:26:09
+ * @LastEditors: zhou wei
+ * @LastEditTime: 2021-02-01 15:38:43
+ */
 const Router = require('koa-router')
 const {
   User
@@ -8,7 +16,7 @@ const {
 const bcrypt = require('bcryptjs')
 const {
   Auth
-} = require('../../../middware/auth')
+} = require('../../../middleware/auth')
 const {
   generateToken,
   generateDateFormat

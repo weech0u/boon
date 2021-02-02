@@ -1,3 +1,11 @@
+/*
+ * @Description: 
+ * @Version: 1.0
+ * @Autor: zhou wei
+ * @Date: 2020-09-26 20:03:29
+ * @LastEditors: zhou wei
+ * @LastEditTime: 2021-02-01 15:38:20
+ */
 const Router = require('koa-router')
 const {
   User
@@ -7,7 +15,7 @@ const {
 } = require('uuid')
 const {
   Auth
-} = require('../../../middware/auth')
+} = require('../../../middleware/auth')
 const {
   sendEmail
 } = require('../../../core/email')
