@@ -1,8 +1,8 @@
 /*
  * @Author: zhou wei
  * @Date: 2020-11-05 15:45:44
- * @LastEditTime: 2021-02-01 11:34:50
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-02-19 15:48:01
+ * @LastEditors: zhou wei
  * @Description: In User Settings Edit
  * @FilePath: /boon/app/models/article.js
  */
@@ -20,7 +20,12 @@ const {
   Love
 } = require('./love')
 
-class Article extends Model {}
+class Article extends Model {
+  static tagMap = {
+    'qd': '前端',
+    'hd': '后端'
+  }
+}
 
 Article.init({
   id: {

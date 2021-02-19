@@ -12,6 +12,9 @@ const {
   Notification
 } = require('../models/noti')
 const {
+  Collections
+} = require('../models/collections')
+const {
   DataTypes,
   Model
 } = require('sequelize')
@@ -88,7 +91,9 @@ User.init({
 }, {
   sequelize,
   modelName: 'User',
-  freezeTableName: true
+  freezeTableName: true,
+  timestamps: true,
+  created: DataTypes.DATE
 })
 
 // User->Article 一对多
@@ -112,6 +117,19 @@ User.hasMany(Notification, {
 })
 
 Notification.belongsTo(User, {
+  as: 'User',
+  foreignKey: 'uId',
+  targetKey: 'id'
+})
+
+// User -> Collections 一对多
+User.hasMany(Collections, {
+  foreignKey: 'uId',
+  as: 'Collections',
+  sourceKey: 'id'
+})
+
+Collections.belongsTo(User, {
   as: 'User',
   foreignKey: 'uId',
   targetKey: 'id'

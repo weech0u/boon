@@ -1,3 +1,11 @@
+/*
+ * @Description: 
+ * @Version: 1.0
+ * @Autor: zhou wei
+ * @Date: 2020-12-11 15:17:58
+ * @LastEditors: zhou wei
+ * @LastEditTime: 2021-02-03 16:38:31
+ */
 const Router = require('koa-router')
 const {
   Love
@@ -8,9 +16,6 @@ const {
 const {
   Article
 } = require('../../models/article')
-const {
-  sequelize
-} = require('../../../core/db')
 const {
   Sequelize
 } = require('sequelize')

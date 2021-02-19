@@ -4,7 +4,7 @@
  * @Autor: zhou wei
  * @Date: 2020-09-25 11:26:09
  * @LastEditors: zhou wei
- * @LastEditTime: 2021-02-01 15:38:43
+ * @LastEditTime: 2021-02-18 15:20:49
  */
 const Router = require('koa-router')
 const {
@@ -45,7 +45,8 @@ router.post('/loginVerify', async (ctx, next) => {
           email: data.username
         }
       ]
-    }
+    },
+    include: ['Collections']
   })
   if (!user) {
     throw new HttpException('用户不存在', 1000)
@@ -74,8 +75,28 @@ router.post('/loginVerify', async (ctx, next) => {
       nickname: user.nickname,
       email: user.email,
       loginTime,
-      level: user.level
+      level: user.level,
+      clc: user.Collections.length
     }
+  }
+})
+
+router.get('/atcount', async ctx => {
+  const {
+    uId
+  } = ctx.request.query
+  const user = await User.findOne({
+    where: {
+      id: uId
+    },
+    include: ['Collections']
+  })
+  const data = {
+    clc: user.Collections.filter(item => item.state != 0).length
+  }
+  ctx.body = {
+    code: 200,
+    data
   }
 })
 

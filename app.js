@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-09-17 13:28:43
- * @LastEditTime: 2021-02-02 17:38:14
+ * @LastEditTime: 2021-02-19 16:39:45
  * @LastEditors: zhou wei
  * @Description: In User Settings Edit
  * @FilePath: /boon/app.js
@@ -23,6 +23,8 @@ const { v4:uuidv4 } = require('uuid')
 require('./app/models/user')
 require('./app/models/article')
 require('./app/models/love')
+require('./app/models/collections')
+require('./app/models/follow')
 
 const app = new Koa()
 
@@ -49,20 +51,20 @@ const io = require('socket.io')(server, {
   }
 })
 const sockets = []
-io.on('connection', socket => {
-  sockets.push({id:socket.id})
-  socket.on('message', message => {
-    sockets.forEach(socket => {
-      io.to(socket.id).emit('init', {
-        id: uuidv4(),
-        content: message,
-        from: sockets.id
-      })
-    })
-  })
-  socket.on('disconnect', () => {
-    console.log('断开连接')
-  })
-})
+// io.on('connection', socket => {
+//   sockets.push({id:socket.id})
+//   socket.on('message', message => {
+//     sockets.forEach(socket => {
+//       io.to(socket.id).emit('init', {
+//         id: uuidv4(),
+//         content: message,
+//         from: sockets.id
+//       })
+//     })
+//   })
+//   socket.on('disconnect', () => {
+//     console.log('断开连接')
+//   })
+// })
 
 server.listen(3001)
