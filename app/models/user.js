@@ -15,6 +15,9 @@ const {
   Collections
 } = require('../models/collections')
 const {
+  Follow
+} = require('../models/follow')
+const {
   DataTypes,
   Model
 } = require('sequelize')
@@ -130,6 +133,19 @@ User.hasMany(Collections, {
 })
 
 Collections.belongsTo(User, {
+  as: 'User',
+  foreignKey: 'uId',
+  targetKey: 'id'
+})
+
+// User -> Follow 一对多
+User.hasMany(Follow, {
+  foreignKey: 'uId',
+  as: 'Follow',
+  sourceKey: 'id'
+})
+
+Follow.belongsTo(User, {
   as: 'User',
   foreignKey: 'uId',
   targetKey: 'id'

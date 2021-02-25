@@ -1,3 +1,11 @@
+/*
+ * @Description: 
+ * @Version: 1.0
+ * @Autor: zhou wei
+ * @Date: 2020-09-22 16:33:44
+ * @LastEditors: zhou wei
+ * @LastEditTime: 2021-02-23 17:04:01
+ */
 const basicAuth = require('basic-auth')
 const {
   compareSync
@@ -17,8 +25,13 @@ class Auth {
 
   get m() {
     return async (ctx, next) => {
+      let token
       // HTTP 规定 身份验证机制 HttpBasicAuth
-      const token = ctx.req.headers.authorization.split(' ')[1]
+      try {
+        token = ctx.req.headers.authorization.split(' ')[1]
+      } catch (error) {
+        throw new Forbbiden('没有权限访问')
+      }
       // const token = basicAuth(ctx.req)
       let errMsg = 'token不合法'
       if (!token) {
@@ -34,7 +47,6 @@ class Auth {
           errMsg = 'token已过期'
           throw new Forbbiden(errMsg)
         }
-        
       }
       if (decode.scope < this.level) {
         errMsg = '权限不足'

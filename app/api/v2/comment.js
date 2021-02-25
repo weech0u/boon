@@ -73,7 +73,6 @@ router.post('/new', async (ctx) => {
         ...condition
       }
     })
-    console.log(to_user.toJSON())
     const from_user = await User.findOne({
       where: {
         id: from_uid
@@ -83,7 +82,6 @@ router.post('/new', async (ctx) => {
     data.from_avatar = from_user.toJSON().avatar
     data.from_nickname = from_user.toJSON().nickname
   } catch (error) {
-    console.log(error)
     throw new HttpException('找不到指定用户')
   }
   try {
