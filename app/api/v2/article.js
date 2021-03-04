@@ -28,7 +28,10 @@ async function getAllArticle(con, ctx) {
   if (con === 1) {
     order = ['updatedAt', 'DESC']
   } else if (con === 2) {
-    order = ['commentsCount', 'DESC']
+    order = [
+      ['commentsCount', 'DESC'],
+      ['niceCount', 'DESC']
+    ]
   }
   let limit = 10,
     offset = (pageNum - 1) * limit
@@ -36,9 +39,7 @@ async function getAllArticle(con, ctx) {
     limit,
     offset,
     include: ['Comments', 'User', 'Love'],
-    order: [
-      order
-    ],
+    order,
     where: conditions,
     // 会排除include中的关联表
     distinct: true
